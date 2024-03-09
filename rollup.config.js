@@ -1,5 +1,7 @@
+import typescript from '@rollup/plugin-typescript';
+
 export default {
-	input: 'src/Stats.js',
+	input: 'src/Stats.ts',
 	output: [
 		{
 			format: 'umd',
@@ -13,5 +15,8 @@ export default {
 			file: 'build/stats.module.js',
 			indent: '\t'
 		}
+	],
+	plugins: [
+		typescript()
 	]
 };
