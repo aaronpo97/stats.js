@@ -1,56 +1,51 @@
-stats.js
-========
+# stats.js
 
-#### JavaScript Performance Monitor ####
+## About
+
+This is a fork of Mr. Doob's `stats.js`, found [here](https://github.com/mrdoob/stats.js), for use in my own personal Three.js projects.
+
+### Changes from original
+
+- Updated to TypeScript to use ES6 class syntax, replacing the function constructor pattern.
+
+## JavaScript Performance Monitor
 
 This class provides a simple info box that will help you monitor your code performance.
 
-* **FPS** Frames rendered in the last second. The higher the number the better.
-* **MS** Milliseconds needed to render a frame. The lower the number the better.
-* **MB** MBytes of allocated memory. (Run Chrome with `--enable-precise-memory-info`)
-* **CUSTOM** User-defined panel support.
+- **FPS** Frames rendered in the last second. The higher the number the better.
+- **MS** Milliseconds needed to render a frame. The lower the number the better.
+- **MB** MBytes of allocated memory. (Run Chrome with `--enable-precise-memory-info`)
+- **CUSTOM** User-defined panel support.
 
+### Screenshots
 
-### Screenshots ###
+![fps.png](files/fps.png)
+![ms.png](files/ms.png)
+![mb.png](files/mb.png)
+![custom.png](files/custom.png)
 
-![fps.png](https://raw.githubusercontent.com/mrdoob/stats.js/master/files/fps.png)
-![ms.png](https://raw.githubusercontent.com/mrdoob/stats.js/master/files/ms.png)
-![mb.png](https://raw.githubusercontent.com/mrdoob/stats.js/master/files/mb.png)
-![custom.png](https://raw.githubusercontent.com/mrdoob/stats.js/master/files/custom.png)
+### Installation
 
-
-### Installation ###
 ```bash
-npm install stats.js
+npm install fork_stats.js
 ```
 
-### Usage ###
+### Usage
 
 ```javascript
-var stats = new Stats();
-stats.showPanel( 1 ); // 0: fps, 1: ms, 2: mb, 3+: custom
-document.body.appendChild( stats.dom );
+const stats = new Stats();
+stats.showPanel(1); // 0: fps, 1: ms, 2: mb, 3+: custom
+document.body.appendChild(stats.dom);
 
 function animate() {
+  stats.begin();
 
-	stats.begin();
+  // monitored code goes here
 
-	// monitored code goes here
+  stats.end();
 
-	stats.end();
-
-	requestAnimationFrame( animate );
-
+  requestAnimationFrame(animate);
 }
 
-requestAnimationFrame( animate );
-```
-
-
-### Bookmarklet ###
-
-You can add this code to any page using the following bookmarklet:
-
-```javascript
-javascript:(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='https://mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
+requestAnimationFrame(animate);
 ```

@@ -1,11 +1,11 @@
 /* eslint-disable no-restricted-globals */
 /**
  * @author mrdoob / http://mrdoob.com/
- * 
- * Updated to TypeScript by @aaronpo97  
+ *
+ * Updated to TypeScript by @aaronpo97
  */
 
-import StatsPanel from "./StatsPanel";
+import StatsPanel from './StatsPanel';
 
 class Stats {
   mode: number;
@@ -21,9 +21,9 @@ class Stats {
 
   constructor() {
     this.mode = 0;
-    this.container = document.createElement("div");
+    this.container = document.createElement('div');
     this.container.addEventListener(
-      "click",
+      'click',
       (event) => {
         event.preventDefault();
         this.mode = (this.mode + 1) % this.container.children.length;
@@ -35,13 +35,11 @@ class Stats {
     this.beginTime = (performance || Date).now();
     this.prevTime = this.beginTime;
     this.frames = 0;
-    this.fpsPanel = this.addPanel(new StatsPanel("FPS", "#0ff", "#002"));
-    this.msPanel = this.addPanel(new StatsPanel("MS", "#0f0", "#020"));
-    this.memPanel = undefined;
+    this.fpsPanel = this.addPanel(new StatsPanel('FPS', '#0ff', '#002'));
+    this.msPanel = this.addPanel(new StatsPanel('MS', '#0f0', '#020'));
 
-    // @ts-expect-error
     if (self.performance && self.performance.memory) {
-      this.memPanel = this.addPanel(new StatsPanel("MB", "#f08", "#201"));
+      this.memPanel = this.addPanel(new StatsPanel('MB', '#f08', '#201'));
     }
 
     this.showPanel(0);
@@ -64,8 +62,7 @@ class Stats {
       this.prevTime = time;
       this.beginFrames = 0;
 
-      if (this.memPanel) {
-        // @ts-expect-error
+      if (this.memPanel && performance.memory) {
         const { memory } = performance;
         this.memPanel.update(
           memory.usedJSHeapSize / 1048576,
@@ -84,7 +81,7 @@ class Stats {
   showPanel(id: number) {
     for (let i = 0; i < this.container.children.length; i += 1) {
       const child = this.container.children[i] as HTMLElement;
-      child.style.display = i === id ? "block" : "none";
+      child.style.display = i === id ? 'block' : 'none';
     }
 
     this.mode = id;
@@ -95,7 +92,5 @@ class Stats {
     return panel;
   }
 }
-
-
 
 export default Stats;
