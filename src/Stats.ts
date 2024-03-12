@@ -2,23 +2,57 @@
 /**
  * @author mrdoob / http://mrdoob.com/
  *
- * Updated to TypeScript by @aaronpo97
+ *   Updated to TypeScript by @aaronpo97
  */
 
 import StatsPanel from './StatsPanel';
 
 class Stats {
-  mode: number;
-  container: HTMLDivElement;
-  beginTime: number;
-  prevTime: number;
-  frames: number;
-  fpsPanel: StatsPanel;
-  msPanel: StatsPanel;
-  memPanel?: StatsPanel;
-  dom: HTMLDivElement;
-  beginFrames: number | undefined;
+  private beginTime: number;
 
+  private container: HTMLDivElement;
+
+  private fpsMaxValue: number | undefined;
+
+  private fpsPanel: StatsPanel;
+
+  private frames: number;
+
+  private memMaxValue: number | undefined;
+
+  private memPanel?: StatsPanel;
+
+  private mode: number;
+
+  private msMaxValue: number | undefined;
+
+  private msPanel: StatsPanel;
+
+  private prevTime: number;
+
+  public beginFrames: number | undefined;
+
+  public dom: HTMLDivElement;
+
+  public fps: number | undefined;
+
+  public mem: number | undefined;
+
+  public ms: number | undefined;
+
+  /**
+   * Creates an instance of Stats.
+   *
+   * @example
+   *   const stats = new Stats();
+   *   document.body.appendChild(stats.dom);
+   *
+   *   const animate = () => {
+   *     stats.begin();
+   *     // Your code here
+   *     stats.end();
+   *   };
+   */
   constructor() {
     this.mode = 0;
     this.container = document.createElement('div');
@@ -29,7 +63,7 @@ class Stats {
         this.mode = (this.mode + 1) % this.container.children.length;
         this.showPanel(this.mode);
       },
-      false
+      false,
     );
 
     this.beginTime = (performance || Date).now();
@@ -46,39 +80,38 @@ class Stats {
     this.dom = this.container;
   }
 
-  begin() {
-    this.beginTime = (performance || Date).now();
+  public begin() {
+    this.beginTime = performance.now();
   }
 
-  end() {
+  public end() {
     this.frames += 1;
 
-    const time = (performance || Date).now();
+    const time = performance.now();
 
-    this.msPanel.update(time - this.beginTime, 200);
+    this.ms = time - this.beginTime;
+    this.msMaxValue = 200;
+    this.msPanel.update(this.ms, this.msMaxValue);
 
     if (time >= this.prevTime + 1000) {
-      this.fpsPanel.update((this.frames * 1000) / (time - this.prevTime), 100);
+      this.fps = (this.frames * 1000) / (time - this.prevTime);
+      this.fpsMaxValue = 150;
+      this.fpsPanel.update(this.fps, this.fpsMaxValue);
       this.prevTime = time;
       this.beginFrames = 0;
 
       if (this.memPanel && performance.memory) {
         const { memory } = performance;
-        this.memPanel.update(
-          memory.usedJSHeapSize / 1048576,
-          memory.jsHeapSizeLimit / 1048576
-        );
+        this.mem = memory.usedJSHeapSize / 1048576;
+        this.memMaxValue = memory.jsHeapSizeLimit / 1048576;
+        this.memPanel.update(this.mem, this.memMaxValue);
       }
     }
 
     return time;
   }
 
-  update() {
-    this.beginTime = this.end();
-  }
-
-  showPanel(id: number) {
+  private showPanel(id: number) {
     for (let i = 0; i < this.container.children.length; i += 1) {
       const child = this.container.children[i] as HTMLElement;
       child.style.display = i === id ? 'block' : 'none';
@@ -87,7 +120,7 @@ class Stats {
     this.mode = id;
   }
 
-  addPanel(panel: StatsPanel) {
+  private addPanel(panel: StatsPanel) {
     this.container.appendChild(panel.dom);
     return panel;
   }

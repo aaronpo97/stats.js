@@ -1,18 +1,32 @@
 class StatsPanel {
   private min = Infinity;
+
   private max = 0;
+
   private PIXEL_RATIO = Math.round(window.devicePixelRatio || 1);
+
   private WIDTH = 80 * this.PIXEL_RATIO;
+
   private HEIGHT = 48 * this.PIXEL_RATIO;
+
   private TEXT_X = 3 * this.PIXEL_RATIO;
+
   private TEXT_Y = 2 * this.PIXEL_RATIO;
+
   private GRAPH_X = 3 * this.PIXEL_RATIO;
+
   private GRAPH_Y = 15 * this.PIXEL_RATIO;
+
   private GRAPH_WIDTH = 74 * this.PIXEL_RATIO;
+
   private GRAPH_HEIGHT = 30 * this.PIXEL_RATIO;
+
   private ctx: CanvasRenderingContext2D;
+
   private name: string;
+
   private bg: string | CanvasGradient | CanvasPattern;
+
   private fg: string | CanvasGradient | CanvasPattern;
 
   dom: HTMLCanvasElement;
@@ -20,7 +34,7 @@ class StatsPanel {
   constructor(
     name: string,
     fg: string | CanvasGradient | CanvasPattern,
-    bg: string | CanvasGradient | CanvasPattern
+    bg: string | CanvasGradient | CanvasPattern,
   ) {
     const canvas = document.createElement('canvas');
     canvas.width = this.WIDTH;
@@ -32,11 +46,9 @@ class StatsPanel {
 
     this.ctx = canvas.getContext('2d')!;
     this.dom = canvas;
-
     this.bg = bg;
     this.fg = fg;
     this.name = name;
-
     this.draw();
   }
 
@@ -49,22 +61,13 @@ class StatsPanel {
 
     this.ctx.fillStyle = this.fg;
     this.ctx.fillText(this.name, this.TEXT_X, this.TEXT_Y);
-    this.ctx.fillRect(
-      this.GRAPH_X,
-      this.GRAPH_Y,
-      this.GRAPH_WIDTH,
-      this.GRAPH_HEIGHT
-    );
+    this.ctx.fillRect(this.GRAPH_X, this.GRAPH_Y, this.GRAPH_WIDTH, this.GRAPH_HEIGHT);
 
     this.ctx.fillStyle = this.bg;
     this.ctx.globalAlpha = 0.9;
-    this.ctx.fillRect(
-      this.GRAPH_X,
-      this.GRAPH_Y,
-      this.GRAPH_WIDTH,
-      this.GRAPH_HEIGHT
-    );
+    this.ctx.fillRect(this.GRAPH_X, this.GRAPH_Y, this.GRAPH_WIDTH, this.GRAPH_HEIGHT);
   }
+
   update(value: number, maxValue: number) {
     this.min = Math.min(this.min, value);
     this.max = Math.max(this.max, value);
@@ -76,7 +79,7 @@ class StatsPanel {
     this.ctx.fillText(
       `${Math.round(value)} ${this.name} (${Math.round(this.min)}-${Math.round(this.max)})`,
       this.TEXT_X,
-      this.TEXT_Y
+      this.TEXT_Y,
     );
 
     this.ctx.drawImage(
@@ -88,14 +91,14 @@ class StatsPanel {
       this.GRAPH_X,
       this.GRAPH_Y,
       this.GRAPH_WIDTH - this.PIXEL_RATIO,
-      this.GRAPH_HEIGHT
+      this.GRAPH_HEIGHT,
     );
 
     this.ctx.fillRect(
       this.GRAPH_X + this.GRAPH_WIDTH - this.PIXEL_RATIO,
       this.GRAPH_Y,
       this.PIXEL_RATIO,
-      this.GRAPH_HEIGHT
+      this.GRAPH_HEIGHT,
     );
 
     this.ctx.fillStyle = this.bg;
@@ -104,7 +107,7 @@ class StatsPanel {
       this.GRAPH_X + this.GRAPH_WIDTH - this.PIXEL_RATIO,
       this.GRAPH_Y,
       this.PIXEL_RATIO,
-      Math.round((1 - value / maxValue) * this.GRAPH_HEIGHT)
+      Math.round((1 - value / maxValue) * this.GRAPH_HEIGHT),
     );
   }
 }

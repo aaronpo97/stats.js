@@ -96,9 +96,6 @@ var Stats = /** @class */ (function () {
         }
         return time;
     };
-    Stats.prototype.update = function () {
-        this.beginTime = this.end();
-    };
     Stats.prototype.showPanel = function (id) {
         for (var i = 0; i < this.container.children.length; i += 1) {
             var child = this.container.children[i];
@@ -114,3 +111,4 @@ var Stats = /** @class */ (function () {
 }());
 
 export { Stats as default };
+//# sourceMappingURL=bundle.module.js.map
